@@ -1,6 +1,7 @@
 use clap::{Parser, ValueEnum, CommandFactory};
 use clap::error::ErrorKind;
 use cli_table::{format::Justify, Table, print_stdout, WithTitle};
+use itertools::Itertools;
 use std::io;
 use std::vec::Vec;
 
@@ -46,11 +47,7 @@ struct CodeUnit {
 fn char_to_bytes(c: char) -> String {
     let mut buf = [0; 4];
     let bytes = c.encode_utf8(&mut buf).as_bytes();
-    let mut output = String::new();
-    for b in bytes {
-        output.push_str(format!("{:08x} ", b).as_str());
-    }
-    return output;
+    return format!("{:08x}", bytes.iter().format(" "));
 }
 
 fn build_table(text: String) -> Vec<CodeUnit> {
