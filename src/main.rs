@@ -48,7 +48,7 @@ fn char_to_bytes(c: char) -> String {
     let bytes = c.encode_utf8(&mut buf).as_bytes();
     let mut output = String::new();
     for b in bytes {
-        output.push_str(format!("{:08x}", b).as_str());
+        output.push_str(format!("{:08x} ", b).as_str());
     }
     return output;
 }
