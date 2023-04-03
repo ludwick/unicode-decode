@@ -1,6 +1,8 @@
 use clap::{Parser, ValueEnum, CommandFactory};
 use clap::error::ErrorKind;
+use cli_table::{format::Justify, Table, print_stdout, WithTitle};
 use std::io;
+use std::vec::Vec;
 
 
 // allowed input encodings
@@ -27,6 +29,45 @@ struct Cli {
     text: Option<String>,
 }
 
+#[derive(Table)]
+struct CodeUnit {
+    #[table(title = "Display", justify = "Justify::Left")]
+    display: String,
+    #[table(title = "Code Unit")]
+    code_unit: String,
+    #[table(title = "Name")]
+    name: String,
+    #[table(title = "UTF-8 Byte(s)")]
+    utf8_bytes: String,
+    #[table(title = "Links")]
+    urls: String,
+}
+
+fn char_to_bytes(c: char) -> String {
+    let mut buf = [0; 4];
+    let bytes = c.encode_utf8(&mut buf).as_bytes();
+    let mut output = String::new();
+    for b in bytes {
+        output.push_str(format!("{:08x}", b).as_str());
+    }
+    return output;
+}
+
+fn build_table(text: String) -> Vec<CodeUnit> {
+    let mut result = Vec::new();
+    for val in text.chars() {
+        result.push(CodeUnit {
+            display: String::from(val),
+            code_unit: String::from("tbd"),
+            name: String::from("tbd"),
+            utf8_bytes: char_to_bytes(val),
+            urls: String::from("tbd"),
+        });
+    }
+
+    return result;
+}
+
 fn main() {
     let cli = Cli::parse();
     let mut buffer = String::new();
@@ -39,15 +80,14 @@ fn main() {
         }
     }
 
-    match cli.text {
-        Some(text) => {
-            println!("text: {}", text);
-        },
+    let text = match cli.text {
+        Some(text) => { text },
         None => {
             // TODO: how to make it error on an empty string?? 
-            match stdin.read_line(&mut buffer) {
-                Ok(text) => {
-                    println!("text (stdin): {}", buffer);
+            // TODO: make it remove the line separator
+            let text = match stdin.read_line(&mut buffer) {
+                Ok(_) => {
+                    buffer
                 },
                 Err(_) => {
                     let mut cmd = Cli::command();
@@ -57,7 +97,12 @@ fn main() {
                     )
                     .exit();
                 }
-            }
+            };
+            text
         }
-    }
+    };
+    println!("text (stdin): {}", text);
+
+    let table = build_table(text);
+    print_stdout(table.with_title()).unwrap();
 }
