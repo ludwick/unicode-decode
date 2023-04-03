@@ -44,6 +44,7 @@ fn main() {
             println!("text: {}", text);
         },
         None => {
+            // TODO: how to make it error on an empty string?? 
             match stdin.read_line(&mut buffer) {
                 Ok(text) => {
                     println!("text (stdin): {}", buffer);
