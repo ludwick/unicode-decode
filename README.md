@@ -9,7 +9,7 @@ limited to UTF-8 input.
 Pass in a string as an argument:
 
 ```
-unicode-decode -s "some interesting string"
+unicode-decode -t "some interesting string"
 ```
 
 Or from standard input:
@@ -26,9 +26,10 @@ echo "what" | unicode-decode -u -
 
 Options:
 
-* `-s` / `--string`: string to process
+* `-t` / `--text`: string to process
 * `-u` / `--urls`: include urls in output
-* `-c` / `--(en)coding`: the type of data (only allowed: utf8)
+* `-e` / `--encoding`: the type of data (only allowed: utf8)
+* `-h` / `--help`: print help message
 
 ## Features
 
