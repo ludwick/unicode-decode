@@ -47,7 +47,7 @@ struct CodeUnit {
 fn char_to_bytes(c: char) -> String {
     let mut buf = [0; 4];
     let bytes = c.encode_utf8(&mut buf).as_bytes();
-    return format!("{:08x}", bytes.iter().format(" "));
+    format!("{:08x}", bytes.iter().format(" "))
 }
 
 fn build_table(text: String) -> Vec<CodeUnit> {
@@ -62,7 +62,7 @@ fn build_table(text: String) -> Vec<CodeUnit> {
         });
     }
 
-    return result;
+    result
 }
 
 fn main() {
@@ -82,7 +82,7 @@ fn main() {
         None => {
             // TODO: how to make it error on an empty string?? 
             // TODO: make it remove the line separator
-            let text = match stdin.read_line(&mut buffer) {
+            match stdin.read_line(&mut buffer) {
                 Ok(_) => {
                     buffer
                 },
@@ -94,8 +94,7 @@ fn main() {
                     )
                     .exit();
                 }
-            };
-            text
+            }
         }
     };
     println!("text (stdin): {}", text);
