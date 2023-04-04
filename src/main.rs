@@ -1,10 +1,9 @@
-use clap::{Parser, ValueEnum, CommandFactory};
 use clap::error::ErrorKind;
-use cli_table::{format::Justify, Table, print_stdout, WithTitle};
+use clap::{CommandFactory, Parser, ValueEnum};
+use cli_table::{format::Justify, print_stdout, Table, WithTitle};
 use itertools::Itertools;
 use std::io;
 use std::vec::Vec;
-
 
 // allowed input encodings
 #[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
@@ -78,14 +77,12 @@ fn main() {
     }
 
     let text = match cli.text {
-        Some(text) => { text },
+        Some(text) => text,
         None => {
-            // TODO: how to make it error on an empty string?? 
+            // TODO: how to make it error on an empty string??
             // TODO: make it remove the line separator
             match stdin.read_line(&mut buffer) {
-                Ok(_) => {
-                    buffer
-                },
+                Ok(_) => buffer,
                 Err(_) => {
                     let mut cmd = Cli::command();
                     cmd.error(
