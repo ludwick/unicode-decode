@@ -43,20 +43,20 @@ struct CodeUnit {
     urls: String,
 }
 
-fn char_to_bytes(c: char) -> String {
+fn char_to_bytestring(c: char) -> String {
     let mut buf = [0; 4];
     let bytes = c.encode_utf8(&mut buf).as_bytes();
     format!("{:08x}", bytes.iter().format(" "))
 }
 
-fn build_table(text: String) -> Vec<CodeUnit> {
+fn build_table(text: &String) -> Vec<CodeUnit> {
     let mut result = Vec::new();
     for val in text.chars() {
         result.push(CodeUnit {
             display: String::from(val),
             code_unit: String::from("tbd"),
             name: String::from("tbd"),
-            utf8_bytes: char_to_bytes(val),
+            utf8_bytes: char_to_bytestring(val),
             urls: String::from("tbd"),
         });
     }
@@ -94,8 +94,9 @@ fn main() {
             }
         }
     };
-    println!("text (stdin): {}", text);
 
-    let table = build_table(text);
+    let table = build_table(&text);
     print_stdout(table.with_title()).unwrap();
+
+    println!("text analyzed: {}", text);
 }
