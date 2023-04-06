@@ -44,18 +44,17 @@ struct CodeUnit {
 
 // The name database is loaded once when building the table and this is of course a wildly
 // inefficient way to do this. But it works for practicing writing code.
-struct NameDatabase {
+struct NameMapping {
     db: HashMap<u32, &'static str>
 }
 
-impl NameDatabase {
-    pub fn new() -> NameDatabase {
+impl NameMapping {
+    pub fn new() -> NameMapping {
         // `ucd-generate names` outputs a static array of tuples of ("name", nnn) so invert order
         // to pipe into hash map. the control chars are sepate because for reasons ucd-generate
         // names suppresses control characters.
         let iter = names::NAMES.iter().map(|(name, code)| (*code, *name)).chain(control::CONTROL.iter().copied());
-        // NameDatabase { db: iter.collect()HashMap::from_iter(iter) }
-        NameDatabase { db: iter.collect() }
+        NameMapping { db: iter.collect() }
     }
 
     pub fn for_char(&self, c: char) -> Option<&str> {
@@ -71,7 +70,7 @@ fn char_to_bytestring(c: char) -> String {
 }
 
 fn build_table(text: &String) -> Vec<CodeUnit> {
-    let names = NameDatabase::new();
+    let names = NameMapping::new();
     let mut result = Vec::new();
     for val in text.chars() {
         result.push(CodeUnit {
