@@ -7,6 +7,7 @@ use std::vec::Vec;
 use std::collections::HashMap;
 
 pub mod names;
+pub mod control;
 
 
 // allowed input encodings
@@ -53,7 +54,9 @@ struct NameDatabase {
 
 impl NameDatabase {
     pub fn new() -> NameDatabase {
-        let iter = names::NAMES.into_iter().map(|(name, code)| (*code, *name));
+        // TODO: why did I have to deref the result of into_iter values so it matches??
+        let control_it = control::CONTROL.into_iter().map(|i| *i);
+        let iter = names::NAMES.into_iter().map(|(name, code)| (*code, *name)).chain(control_it);
         NameDatabase { db: HashMap::from_iter(iter) }
     }
 
@@ -66,7 +69,7 @@ impl NameDatabase {
 fn char_to_bytestring(c: char) -> String {
     let mut buf = [0; 4];
     let bytes = c.encode_utf8(&mut buf).as_bytes();
-    format!("{:08x}", bytes.iter().format(" "))
+    format!("{:x}", bytes.iter().format(" "))
 }
 
 fn build_table(text: &String) -> Vec<CodeUnit> {
