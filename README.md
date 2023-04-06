@@ -6,6 +6,11 @@ me tool I decided to write as a means of refreshing my knowledge of Rust (previo
 work was under Edition 2018!) and also to understand Unicode better.
 This is currently limited to analyzing UTF-8 input.
 
+## Install
+
+Right now, clone the repo. Then run `cargo run --  --help` (assuming you have cargo
+etc installed).
+
 ## Usage
 
 Pass in a string as an argument:

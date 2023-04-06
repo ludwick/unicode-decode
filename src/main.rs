@@ -48,10 +48,9 @@ struct NameDatabase {
 
 impl NameDatabase {
     pub fn new() -> NameDatabase {
-        // TODO: why did I have to deref the result of into_iter values so it matches??
-        let control_it = control::CONTROL.into_iter().map(|i| *i);
-        let iter = names::NAMES.into_iter().map(|(name, code)| (*code, *name)).chain(control_it);
-        NameDatabase { db: HashMap::from_iter(iter) }
+        let iter = names::NAMES.iter().map(|(name, code)| (*code, *name)).chain(control::CONTROL.iter().copied());
+        // NameDatabase { db: iter.collect()HashMap::from_iter(iter) }
+        NameDatabase { db: iter.collect() }
     }
 
     pub fn for_char(&self, c: char) -> Option<&str> {
