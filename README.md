@@ -37,14 +37,13 @@ echo "what" | unicode-decode -u -
 Options:
 
 * Positional arguments: string to process
-* `-u` / `--urls`: include urls in output
 * `-e` / `--encoding`: the type of data (only allowed: utf8)
 * `-h` / `--help`: print help message
 
 ## Features
 
-* Shows each byte and what it means
-* May output URLs to emojipedia and other sources
+* Shows each Unicode code point and its name
+* Shows the byte(s) it is represented in utf-8
 
 ## License
 

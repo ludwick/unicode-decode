@@ -21,10 +21,6 @@ enum InputEncoding {
 #[command(author, version, about, long_about = None)]
 /// some help text
 struct Cli {
-    /// whether to show urls
-    #[arg(short, long, default_value_t = false)]
-    urls: bool,
-
     /// encoding to assume on input text
     #[arg(short, long, value_enum, default_value_t = InputEncoding::Utf8)]
     encoding: InputEncoding,
@@ -44,8 +40,6 @@ struct CodeUnit {
     name: String,
     #[table(title = "UTF-8 Byte(s)", justify = "Justify::Right")]
     utf8_bytes: String,
-    #[table(title = "Links")]
-    urls: String,
 }
 
 struct NameDatabase {
@@ -81,7 +75,6 @@ fn build_table(text: &String) -> Vec<CodeUnit> {
             code_unit: format!("{:04x}", val as u32),
             name: String::from(match names.for_char(val) { Some(v) => v, None => "unknown" }),
             utf8_bytes: char_to_bytestring(val),
-            urls: String::from("tbd"),
         });
     }
 
@@ -92,13 +85,6 @@ fn main() {
     let cli = Cli::parse();
     let mut buffer = String::new();
     let stdin = io::stdin();
-
-    println!("urls: {}", cli.urls);
-    match cli.encoding {
-        InputEncoding::Utf8 => {
-            println!("encoding: utf8");
-        }
-    }
 
     let text = match cli.text {
         Some(text) => text,
