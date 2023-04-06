@@ -34,8 +34,8 @@ struct Cli {
 struct CodeUnit {
     #[table(title = "Display", justify = "Justify::Left")]
     display: String,
-    #[table(title = "Code Unit", justify = "Justify::Right")]
-    code_unit: String,
+    #[table(title = "Code Point", justify = "Justify::Right")]
+    code_point: String,
     #[table(title = "Name", justify = "Justify::Left")]
     name: String,
     #[table(title = "UTF-8 Byte(s)", justify = "Justify::Right")]
@@ -72,7 +72,7 @@ fn build_table(text: &String) -> Vec<CodeUnit> {
     for val in text.chars() {
         result.push(CodeUnit {
             display: String::from(val),
-            code_unit: format!("{:04x}", val as u32),
+            code_point: format!("{:04x}", val as u32),
             name: String::from(match names.for_char(val) { Some(v) => v, None => "unknown" }),
             utf8_bytes: char_to_bytestring(val),
         });
