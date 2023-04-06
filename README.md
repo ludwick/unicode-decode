@@ -13,16 +13,33 @@ etc installed).
 
 ## Usage
 
+Example:
+
+```
+☰ ~ echo 👮🏽‍♀️ | ./target/debug/unicode-decode
++---------+------------+-----------------------------------+---------------+
+| Display | Code Point | Name                              | UTF-8 Byte(s) |
++---------+------------+-----------------------------------+---------------+
+| 👮      |      1f46e | POLICE OFFICER                    |   f0 9f 91 ae |
++---------+------------+-----------------------------------+---------------+
+| 🏽      |      1f3fd | EMOJI MODIFIER FITZPATRICK TYPE-4 |   f0 9f 8f bd |
++---------+------------+-----------------------------------+---------------+
+|         |       200d | ZERO WIDTH JOINER                 |      e2 80 8d |
++---------+------------+-----------------------------------+---------------+
+| ♀       |       2640 | FEMALE SIGN                       |      e2 99 80 |
++---------+------------+-----------------------------------+---------------+
+| ️        |       fe0f | VARIATION SELECTOR-16             |      ef b8 8f |
++---------+------------+-----------------------------------+---------------+
+|         |       000a | LINE FEED (LF)                    |             a |
++---------+------------+-----------------------------------+---------------+
+text analyzed: 👮🏽‍♀️
+
+```
+
 Pass in a string as an argument:
 
 ```
 unicode-decode "some interesting string"
-```
-
-Or from standard input:
-
-```
-echo "some interesting string" | unicode-decode
 ```
 
 If you don't pass in input by one of these mechanisms, the tool will wait for
@@ -31,12 +48,6 @@ input followed by a newline:
 ```
 unicode-decode<enter>
 some interesting string
-```
-
-To add URLs to useful websitese for a given string:
-
-```
-echo "what" | unicode-decode -u -
 ```
 
 Options:
