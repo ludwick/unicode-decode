@@ -42,12 +42,17 @@ struct CodeUnit {
     utf8_bytes: String,
 }
 
+// The name database is loaded once when building the table and this is of course a wildly
+// inefficient way to do this. But it works for practicing writing code.
 struct NameDatabase {
     db: HashMap<u32, &'static str>
 }
 
 impl NameDatabase {
     pub fn new() -> NameDatabase {
+        // `ucd-generate names` outputs a static array of tuples of ("name", nnn) so invert order
+        // to pipe into hash map. the control chars are sepate because for reasons ucd-generate
+        // names suppresses control characters.
         let iter = names::NAMES.iter().map(|(name, code)| (*code, *name)).chain(control::CONTROL.iter().copied());
         // NameDatabase { db: iter.collect()HashMap::from_iter(iter) }
         NameDatabase { db: iter.collect() }
